@@ -32,7 +32,7 @@
   git:
     repo: https://github.com/cloudflare/mod_cloudflare.git
     dest: /tmp/mod_cloudflare
-  when: mod_cloudflare|failed and is_mod_cloudflare_available|failed
+  when: (mod_cloudflare|failed and is_mod_cloudflare_available|failed) or upgrade
   tags:
     - cloudflare
 
@@ -41,7 +41,7 @@
   become: yes
   args:
     chdir: /tmp/mod_cloudflare
-  when: mod_cloudflare|failed and is_mod_cloudflare_available|failed
+  when: (mod_cloudflare|failed and is_mod_cloudflare_available|failed) or upgrade
   notify: reload server
   tags:
     - cloudflare
@@ -51,7 +51,7 @@
     state: present
     name: cloudflare
   notify: reload server
-  when: is_mod_cloudflare_available and mod_cloudflare|failed
+  when: (is_mod_cloudflare_available and mod_cloudflare|failed) or upgrade
   tags:
     - cloudflare
 
@@ -59,7 +59,7 @@
   file:
     path: /tmp/mod_cloudflare
     state: absent
-  when: mod_cloudflare|failed and is_mod_cloudflare_available|failed
+  when: (mod_cloudflare|failed and is_mod_cloudflare_available|failed) or upgrade
   tags:
     - cloudflare
 
